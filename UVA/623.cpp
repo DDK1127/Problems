@@ -1,14 +1,32 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+vector<int> vv(10000);
 
 int main(){
-    int num;
-    vector<vector<int> > vv(1001, vector<int>(3000));
+    int n, m, carry, x;
 
-    while(cin >> num){
-        cout << vv.size() << endl;
-        cout << num <<"!" << endl;
+    while(cin >> n){
+        vv[0] = 1;
+        m = 1; carry = 0;
+        for(int i = 1; i <= n; i++){
+            for(int j = 0; j < m; j++){
+                x = vv[j]*i+carry;
+                vv[j] = x%10;
+                carry = x/10;
+            }
+            while(carry > 0){
+                vv[m] = carry%10;
+                carry /= 10;
+                m++;
+            }
+        }
+        vv[m] = '\0';
+        cout << n  << "!" << endl;
+        for(int i = m-1; i >= 0; i--)
+            cout << vv[i];
+        cout << endl;
+        
     }
     return 0;
 }
