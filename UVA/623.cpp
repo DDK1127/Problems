@@ -26,7 +26,7 @@ int main(){
         for(int i = m-1; i >= 0; i--)
             cout << vv[i];
         cout << endl;
-        
+        vv.clear();
     }
     return 0;
 }
