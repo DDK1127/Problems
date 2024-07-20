@@ -21,8 +21,9 @@ class Binary_Search_Tree{
     public:
         TreeNode *root;
         Binary_Search_Tree():root(nullptr){};
-        TreeNode* BST_Create(int n, string s);
-        TreeNode* BST_insert(TreeNode*& root, int n, string s); // recusion insertion.
+        void BST_Create(int n, string s);
+        void BST_Delete(TreeNode*& root);
+        void BST_insert(TreeNode*& root, int n, string s); // recusion insertion.
         void BST_insert(int n, string s); // sequence insertion.
         bool BST_Search(TreeNode* root, int n);
         bool BST_Search(int n);
@@ -38,9 +39,10 @@ class Binary_Search_Tree{
         void Preorder(TreeNode* root);
         void Inorder(TreeNode* root);
         void Postorder(TreeNode* root);
+        Binary_Search_Tree& operator=(const Binary_Search_Tree& other);
 };
 
-TreeNode* Binary_Search_Tree::BST_Create(int n, string s){
+void Binary_Search_Tree::BST_Create(int n, string s){
     if(root == nullptr)
         root = new TreeNode(n, s);
     else
@@ -48,7 +50,16 @@ TreeNode* Binary_Search_Tree::BST_Create(int n, string s){
     cout << "root ~~~ value = " << root->get_value() << ", string = " << root->get_str() << endl;
 };
 
-TreeNode* Binary_Search_Tree::BST_insert(TreeNode*& root, int n, string s){
+void Binary_Search_Tree::BST_Delete(TreeNode*& root){
+    if(root != nullptr){
+        BST_Delete(root->left);
+        BST_Delete(root->right);
+        delete root;
+        root = nullptr;
+    }
+}
+
+void Binary_Search_Tree::BST_insert(TreeNode*& root, int n, string s){
     if(root == nullptr)
         root =  new TreeNode(n, s);
     else if(root->value < n)
@@ -190,6 +201,14 @@ void Binary_Search_Tree::Postorder(TreeNode* root){
     }
 }
 
+Binary_Search_Tree& Binary_Search_Tree::operator=(const Binary_Search_Tree& other){
+    if(this != &other){
+        BST_Delete(root);
+        root = BST_Copy(other.root);
+    }
+    return *this;
+}
+
 int main(){
     Binary_Search_Tree B1, ccc;
     B1.BST_Create(999, "BBBBBBBBig BBBBBBBoos");
@@ -213,7 +232,7 @@ int main(){
     cout << "\nLeaf node have " << B1.CountLeaf(B1.root) << endl;
     cout << "\nTree Height =  " << B1.Height(B1.root) << endl;
 
-    ccc.root = B1.BST_Copy(B1.root);
+    ccc = B1;
     cout << "Inorder => " << endl;
     ccc.Inorder(ccc.root);
     B1.BST_Equal(B1.root, ccc.root) ? cout << "\n is TTTTTT" : cout << "\nFFFFFFFFFFF" << endl;
