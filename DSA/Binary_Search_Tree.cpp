@@ -22,12 +22,22 @@ class Binary_Search_Tree{
         TreeNode *root;
         Binary_Search_Tree():root(nullptr){};
         TreeNode* BST_Create(int n, string s);
-        bool BST_Search(int n);
         TreeNode* BST_insert(TreeNode*& root, int n, string s); // recusion insertion.
         void BST_insert(int n, string s); // sequence insertion.
+        bool BST_Search(TreeNode* root, int n);
+        bool BST_Search(int n);
+        TreeNode* BST_Copy(TreeNode* root);
+        bool BST_Equal(TreeNode* x, TreeNode* y);
         bool is_Empty(TreeNode* node){return node == nullptr;};
         bool is_Leaf(TreeNode* node){return node->left == nullptr && node->right == nullptr;};
-        int Node_number(TreeNode* root);
+        unsigned int Node_number(TreeNode* root);
+        unsigned int CountDegree2(TreeNode* root);
+        unsigned int CountDegree1(TreeNode* root);
+        unsigned int CountLeaf(TreeNode* root);
+        unsigned int Height(TreeNode* root);
+        void Preorder(TreeNode* root);
+        void Inorder(TreeNode* root);
+        void Postorder(TreeNode* root);
 };
 
 TreeNode* Binary_Search_Tree::BST_Create(int n, string s){
@@ -35,25 +45,7 @@ TreeNode* Binary_Search_Tree::BST_Create(int n, string s){
         root = new TreeNode(n, s);
     else
         cout << "Root alredy have value !!!" << endl;
-    cout << "value = " << root->get_value() << ", string = " << root->get_str() << endl;
-};
-
-bool Binary_Search_Tree::BST_Search(int n){
-    TreeNode* current = root;
-
-    while(current != nullptr && current->value != n){
-        if(current->value < n)
-            current = current->right;
-        else
-            current = current->left;
-    }
-
-    if(current == nullptr || current->value != n)
-        return false;
-    else{
-        cout << "find successful!, is => " << current->s << endl;
-        return true;
-    }
+    cout << "root ~~~ value = " << root->get_value() << ", string = " << root->get_str() << endl;
 };
 
 TreeNode* Binary_Search_Tree::BST_insert(TreeNode*& root, int n, string s){
@@ -69,19 +61,160 @@ void Binary_Search_Tree::BST_insert(int n, string s){
     //
 };
 
-int Binary_Search_Tree::Node_number(TreeNode* root){
+bool Binary_Search_Tree::BST_Search(TreeNode* root, int n){
+    if(root == nullptr)
+        return false;
+    else{
+        if(root->value == n)
+            return true;
+        else if(root->value < n)
+            return BST_Search(root->right, n);
+        else
+            return BST_Search(root->left, n);
+    }
+}
+
+bool Binary_Search_Tree::BST_Search(int n){
+    TreeNode* current = root;
+
+    while(current != nullptr && current->value != n){
+        if(current->value < n)
+            current = current->right;
+        else
+            current = current->left;
+    }
+
+    if(current == nullptr || current->value != n){
+        cout << "Not find No." << n << endl;
+        return false;
+    }
+    else{
+        cout << "Find successful!, is => " << current->s << endl;
+        return true;
+    }
+};
+
+TreeNode* Binary_Search_Tree::BST_Copy(TreeNode* root){
+    if(root == nullptr)
+        return nullptr;
+    else{
+        TreeNode* cproot = new TreeNode(root->value, root->s);
+        cproot->left = BST_Copy(root->left);
+        cproot->right = BST_Copy(root->right);
+        return cproot;
+    }
+}
+
+bool Binary_Search_Tree::BST_Equal(TreeNode* x, TreeNode* y){
+    if(x == nullptr && y == nullptr)
+        return true;
+    else if(x != nullptr && y != nullptr){
+        bool result = false;
+        if(x->value == y->value){
+            if(BST_Equal(x->left, y->right) && BST_Equal(x->right, y->right))
+                result = true;
+        }
+        return result;
+    }
+    else 
+        return false; 
+}
+
+unsigned int Binary_Search_Tree::Node_number(TreeNode* root){
     if(!is_Empty(root))
         return 1+Node_number(root->left)+Node_number(root->right);
     else    
         return 0;
 };
 
+unsigned int Binary_Search_Tree::CountDegree2(TreeNode* root){
+    if(root == nullptr)
+        return 0;
+    int res = 0;
+    if(root->left && root->right)
+        res++;
+    res += CountDegree2(root->right)+CountDegree2(root->left);
+    
+    return res;
+}
+
+unsigned int Binary_Search_Tree::CountDegree1(TreeNode* root){
+    if(root == nullptr)
+        return 0;
+    int res = 0;
+    if((root->left && !root->right) || (root->right && !root->left))
+        res ++; 
+    res += CountDegree1(root->left)+CountDegree1(root->right);
+
+    return res;
+}
+
+unsigned int Binary_Search_Tree::CountLeaf(TreeNode* root){
+    if(root == nullptr)
+        return 0;
+    int res = 0;
+    if(!root->left && !root->right)
+        res ++;
+    res += CountLeaf(root->left)+CountLeaf(root->right);
+
+    return res;
+}
+
+unsigned int Binary_Search_Tree::Height(TreeNode* root){
+    if(root == nullptr)
+        return 0;
+    return max(Height(root->left), Height(root->left))+1;
+}
+
+void Binary_Search_Tree::Preorder(TreeNode* root){
+    if(root != nullptr){
+        cout << "'" << root->s << "' ";
+        Preorder(root->left);
+        Preorder(root->right);
+    }
+}
+
+void Binary_Search_Tree::Inorder(TreeNode* root){
+    if(root != nullptr){
+        Inorder(root->left);
+        cout << "'" << root->s << "' ";
+        Inorder(root->right);
+    }
+}
+
+void Binary_Search_Tree::Postorder(TreeNode* root){ 
+    if(root != nullptr){
+        Postorder(root->left);
+        Postorder(root->right);
+        cout << "'" << root->s << "' ";
+    }
+}
+
 int main(){
-    Binary_Search_Tree B1;
-    B1.BST_Create(9999, "BBBBBBBBig BBBBBBBoos");
+    Binary_Search_Tree B1, ccc;
+    B1.BST_Create(999, "BBBBBBBBig BBBBBBBoos");
     B1.BST_insert(B1.root, 8841, "Ba");
-    B1.BST_insert(B1.root, 00054, "g");
+    B1.BST_insert(B1.root, 54, "g");
+    B1.BST_insert(B1.root ,11, "Eric");
+    B1.BST_insert(B1.root, 98, "DD");
+    B1.BST_insert(B1.root, 1223, "HEHEHEH");
+    B1.BST_insert(B1.root, 12, "QQ");
+    B1.BST_insert(B1.root, 2, "2");
+    B1.BST_insert(B1.root, 1, "1");
     cout << "number of Node : " << B1.Node_number(B1.root) << endl;
-    B1.BST_Search(8840) ? cout << "Find!" << endl : cout << "Not Find~" << endl;
+    // B1.BST_Search(88410);
+    // B1.BST_Search(B1.root, 00055) ? cout << "yes" << endl : cout << "not" << endl;
+    cout << "Inorder => " << endl;
+    B1.Inorder(B1.root);
+    cout << "\nPreorder => " << endl;
+    B1.Preorder(B1.root);
+    cout << "\nDegree2 node have " << B1.CountDegree2(B1.root) << endl;
+    cout << "\nDegree1 node have " << B1.CountDegree1(B1.root) << endl;
+    cout << "\nLeaf node have " << B1.CountLeaf(B1.root) << endl;
+    cout << "\nTree Height =  " << B1.Height(B1.root) << endl;
+
+    ccc.root = B1.BST_Copy(B1.root);
+    cout << "Inorder => " << endl;
+    ccc.Inorder(ccc.root);
     return 0;
 }
