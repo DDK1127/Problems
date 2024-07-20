@@ -111,7 +111,7 @@ bool Binary_Search_Tree::BST_Equal(TreeNode* x, TreeNode* y){
     else if(x != nullptr && y != nullptr){
         bool result = false;
         if(x->value == y->value){
-            if(BST_Equal(x->left, y->right) && BST_Equal(x->right, y->right))
+            if(BST_Equal(x->left, y->left) && BST_Equal(x->right, y->right))
                 result = true;
         }
         return result;
@@ -216,5 +216,6 @@ int main(){
     ccc.root = B1.BST_Copy(B1.root);
     cout << "Inorder => " << endl;
     ccc.Inorder(ccc.root);
+    B1.BST_Equal(B1.root, ccc.root) ? cout << "\n is TTTTTT" : cout << "\nFFFFFFFFFFF" << endl;
     return 0;
 }
