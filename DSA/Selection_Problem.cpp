@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 int median(vector<int> &v, int l, int r);
 
 int selection_algorithm(vector<int> &v, int l, int r, int k){
@@ -11,7 +12,7 @@ int selection_algorithm(vector<int> &v, int l, int r, int k){
         for(int i = l+1; i <= r; i++){
             value = v[i], j = i;
             while(j-1 >= l && v[j-1] > value)
-                v[j--] = v[j-l];
+                v[j] = v[j-1], j--;
             v[j] = value;
         }
         return l+k;
@@ -46,21 +47,21 @@ int median(vector<int> &v, int l, int r){
             subr = r;
         median_idx = selection_algorithm(v, subl, subr, (subr-subl)/2);
         swap(v[l+i], v[median_idx]);
-        cout << "L = " << l << ", R = " << r << endl;
     }
     return selection_algorithm(v, l, l+num_median, num_median/2); 
 }
 
-vector<int> v(100000);
+vector<int> v;
 int main(){
     int n, m, input;
     while(cin >> n >> m){
         for(int i = 0; i < n; i++){
             cin >> input;
-            v[i] = input;
+            v.push_back(input);
         }
         int idx = selection_algorithm(v, 0, n-1, m);
         cout << "result => " << v[idx] << endl;
+        v.clear();
     }
     return 0;
 }
