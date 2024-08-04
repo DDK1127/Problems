@@ -76,10 +76,9 @@ const ll MAXN = 100005;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 void solve(){
-    
+    //....
 }
 
-/********** Good Luck :) **********/
 int main () {
     TIME(main);
     IOS();
