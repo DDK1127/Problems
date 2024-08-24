@@ -12,15 +12,20 @@
  */
 class Solution {
 public:
-    int s = 0;
+    int s = 0, ans;
     int kthSmallest(TreeNode* root, int k) {
+        help(root, k);
+        return ans;
+    }
+    int help(TreeNode* root, int k) {
         if(root->left)
-            return kthSmallest(root->left, k);
-        s++;
-        if(s == k)
-            return root->val;
+            s += kthSmallest(root->left, k);
+        if(++s == k){
+            ans = root->val;
+            return 0;
+        }
         if(root->right)
-            return kthSmallest(root->right, k);
-        return root->val;
+            s += kthSmallest(root->right, k);
+        return s;
     }
 };
