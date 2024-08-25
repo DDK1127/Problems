@@ -1,4 +1,4 @@
-// LeetCode Greatest Common Divisor of strings
+// LeetCode 1071.Greatest Common Divisor of strings
 
 class Solution {
 public:
