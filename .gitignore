@@ -93,3 +93,5 @@ $RECYCLE.BIN/
 
 #  vscode
 .vscode
+input.txt
+output.txt
