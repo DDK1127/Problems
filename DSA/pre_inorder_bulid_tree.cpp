@@ -6,6 +6,7 @@ struct node{
     node *left;
     node *right;
 };
+
 node *newnode(char c){
     node * Node = new node();
     Node->val = c;
@@ -23,7 +24,7 @@ int helper(string s, int start, int end, char value){
     return 0; // no way not find, maybe input error value.
 }
 
-node *build_tree(string in, string pre, int s, int t){
+node *build_tree(string in, string pre, int s, int t/*, int &preindex */){
     static int preindex = 0;
     if(s > t)
         return NULL;
