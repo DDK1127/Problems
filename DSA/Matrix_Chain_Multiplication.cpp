@@ -2,18 +2,6 @@
 using namespace std;
 
 #define ll long long  
-/*
-void Print_Parens(vector<vector<int> > &c, int i, int j){
-	if(i == j)
-		cout << "A";
-	else{
-		cout << "(";
-		Print_Parens(c, i, c[i][j]);
-		Print_Parens(c, c[i][j]+1, j);
-		cout << ")";
-	}
-}
-*/
 
 void Print_Matrix(vector<vector<ll> > & dp){
 	for(int i = 0; i < dp.size()-1; i++){
