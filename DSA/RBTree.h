@@ -33,8 +33,9 @@ class RBTree {
 		void insert(T key);
 		void remove(T key);
 		RBNode<T>* search(T key) const;
-		void inorder() const;
-		void inorderHelper(RBNode<T>* node) const;
+		void inorder(RBNode<T>* node) const;
+		void preorder(RBNode<T>* node) const;
+		void postorder(RBNode<T>* node) const;
 };
 
 #endif 

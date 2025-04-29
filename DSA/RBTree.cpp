@@ -92,7 +92,76 @@ void RBTree<T>::insert(T key){
 }
 
 template <typename T>
+void RBTree<T>::insertFixup(RBNode<T>* z){
+	while(z->parent && z->parent->color == RED){
+		if(z->parent == z->parent->parent->left){
+			RBNode<T>* y = z->parent->parent->right;
+			if(y && y->color == RED){
+				z->parent->color = BLACK;
+				y->color = BLACK;
+				z->parent->parent = RED;
+				z = z->parent->parent;
+			}
+			else{ // y not exit, (nbalanced) need to rotation.
+				if(z == z->parent->right){
+					z = z->parent;
+					leftRotate(z);
+				}
+				z->parent->color = BLACK;
+				z->parent->parent->color = RED;
+				rightRotate(z->parent->parent);
+			}
+		}
+		else{ // z->parent == z->parent->parent-right 
+			RBNode<T>* y = z->parent->parent->left;
+            if (y && y->color == RED) {
+                z->parent->color = BLACK;
+                y->color = BLACK;
+                z->parent->parent->color = RED;
+                z = z->parent->parent;
+            } 
+			else {
+                if (z == z->parent->left) {
+                    z = z->parent;
+                    rightRotate(z);
+                }
+                z->parent->color = BLACK;
+                z->parent->parent->color = RED;
+                leftRotate(z->parent->parent);
+            }
+		}
+	}
+	root->color = BLACK;
+}
 
-// test
+template <typename T>
+void RBTree<T>::inorder(RBNode<T>* node) const{
+	if(node != nil){
+		inorder(node->left);
+		std::cout << node-key << " ";
+		inorder(node->right);
+	}
+
+}
+
+template <typename T>
+void RBTree<T>::preorder(RBNode<T>* node) const{
+	if(node != nil){
+		std::cout << node->key << " ";
+		preorder(node->left);
+		preorder(node-right);
+	}
+}
+
+template <typename T>
+void RBTree<T>::postorder(RBNode<T>* node) const{
+	if(node != nil){
+		postorder(node->left);
+		postorder(node->right);
+		std::cout << node-val << " ";
+	}
+}
+
+// test example
 template class RBTree<int>;
 
