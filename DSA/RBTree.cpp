@@ -3,8 +3,9 @@
 
 template <typename T>
 RBTree<T>::RBTree(){
-	nil = new RBTree<T>(T());
+	nil = new RBTree<T> (T());
 	nil->color = BLACK;
+	nil->left = nil->right = nil->parent = nullptr;
 	root = nil;
 }
 
@@ -22,6 +23,75 @@ void RBTree<T>::destroyTree(RBNode<T>* node){
 		delete node;
 	}
 }
+
+template <typename T>
+void RBTree<T>::leftRotate(RBNode<T>* x){
+	RBNode<T>* y = x->right;
+	x->right = y->left;
+	
+	if(y->left != nil)
+		y->left->parent = x;
+	y->parent = x->parent;
+	if(x->parent == nullptr)
+		root = y;
+	else if(x == x->parent->left)
+		x->parent->left = y;
+	else 
+		x->parent->right = y;
+
+	y->left = x;
+	x->parent = y;
+}
+
+template <typename T>
+void RBTree<T>::rightRotate(RBNode<T>* y){
+	RBNode<T>* x = y->left;
+    y->left = x->right;
+
+    if (x->right != nil)
+        x->right->parent = y;
+    x->parent = y->parent;
+    if (y->parent == nullptr)
+        root = x;
+    else if (y == y->parent->right)
+        y->parent->right = x;
+    else
+        y->parent->left = x;
+
+    x->right = y;
+    y->parent = x;
+}
+
+template < typename T>
+void RBTree<T>::insert(T key){
+	RBNode<T>* x = new RBNode<T>(key);
+	z->left = z->right = z->parent = nil;
+
+	RBNode<T>* y = nullptr, *x = root;
+	while(x != nil){
+		y = x;
+		if(z->key < x->key)
+			x = x->left;
+		else 
+			x = =x->right;
+	}
+
+	z->parent = y;
+
+	if(y == nullptr)
+		root = z;
+	else if(z->key < y->key)
+		y->left = z;
+	else 
+		y->right = z;
+
+	z->left = z->right = nil;
+	z->color = RED;
+
+	insertFixup(z);
+}
+
+template <typename T>
 
 // test
 template class RBTree<int>;
