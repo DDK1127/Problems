@@ -11,7 +11,7 @@ struct RBNode{
 	RBNode* left;
 	RBNode* right;
 
-	RBNode(T key) : key(key), color(RED), parent(nullptr), left(nullptr), right(nullptr);
+	RBNode(T key) : key(key), color(RED), parent(nullptr), left(nullptr), right(nullptr) {}
 };
 
 template <typename T>
@@ -30,6 +30,7 @@ class RBTree {
 		RBTree();
 		~RBTree();
 
+		RBNode<T>* getRoot() const { return root; }
 		void insert(T key);
 		void remove(T key);
 		RBNode<T>* search(T key) const;
